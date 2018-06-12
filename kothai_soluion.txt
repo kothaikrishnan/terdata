@@ -1,0 +1,30 @@
+select title from movie where director='steven spielberg';
+
+select year from movie where mID in(select mID from rating where stars='4' or stars='5');
+
+select title from movie where mID not in(select mID from rating);
+
+select name from reviewer where rID in(select rID from rating where ratingDate="null");
+
+select m.title,r.name,s.stars,s.ratingdate from movie m 
+inner join reviewer r on m.mID=r.rID 
+inner join rating s on s.mID=m.mID 
+order by r.name,m,title,count(stars);
+
+select m.title,r.name from movie m 
+inner join rating s on m.mID=s.mID
+inner join reviewer r on r.rID=s.rID 
+where rID in (select rID from rating group byrID having count(mID)>1);
+
+select r.name from reviewer r 
+inner join rating s on r.rID=s.rID
+ inner join movie m on m.mID=s.mID 
+where title='gone with the wind'; 
+
+select rID,title from rating s 
+inner join movie m on m.mID=s.mID 
+inner join reviewer r on r.rID=s.rID
+where r.name not in(select name from reviewer where name='chris jackson');
+
+select m.title from movie m inner join rating s on s.mID=m.mID where diff_stars in(select max(stars)-min(stars) as diff_stars from rating) order by diff_stars,m.title
+
